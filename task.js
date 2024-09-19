@@ -1,39 +1,38 @@
-localStorage.getItem("tasks")
-
-document.addEventListener("DOMContentLoaded", () => {
-  
 const taskInput = document.querySelector(".tasks__input");
 const addButton = document.querySelector("button");
-const tasks = document.querySelector(".tasks")
+const tasksList = document.querySelector(".tasks__list")
+const taskRemove = document.querySelectorAll(".task__remove")
 
 addButton.addEventListener("click", (event) => {
-  
+
   event.preventDefault();
-  
-  const newDiv = document.createElement("div");
-  newDiv.classList.add("task");
-  tasks.appendChild(newDiv)
-  
-  const taskTitle = document.createElement("div");
-  taskTitle.classList.add("task__title");
-  taskTitle.textContent = taskInput.value;
-  taskInput.value = "";
-  newDiv.appendChild(taskTitle);
-  
-  const taskRemove = document.createElement("a");
-  taskRemove.href = "#";
-  taskRemove.classList.add("task__remove");
-  taskRemove.innerHTML = "&times;";
-  newDiv.appendChild(taskRemove);
-  
- localStorage.setItem("tasks", newDiv)
-  
-  taskRemove.addEventListener("click", (event) => {
-    
+
+  const title = taskInput.value;
+
+  if (title.trim() != "") {
+    tasksList.insertAdjacentHTML("afterbegin", `
+    <div class="task">
+      <div class="task__title">
+        ${title.trim( )}
+      </div>
+      <a href="#" class="task__remove">&times;</a>
+    </div>
+    `);
+
+    taskInput.value = "";
+
+    const task = tasksList.querySelector(".task");
+
+    const taskRemove = task.querySelector(".task__remove");
+
+    taskRemove.addEventListener("click", (event) => {
+
     event.preventDefault();
 
     const parRemove = taskRemove.closest(".task");
     parRemove.remove();
-});
-});
+  });
+} else {
+  taskInput.value = "";
+};
 });
